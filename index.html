@@ -1,12 +1,18 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Sistema de identificación de zonas emisoras de CO₂</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
   <style>
-    body { margin: 0; font-family: Arial, sans-serif; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
     header {
       background: #333;
       color: white;
@@ -14,19 +20,43 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
     }
     header h1 {
       margin: 0;
       font-size: 1.5rem;
     }
-    nav a {
-      color: white;
-      margin-left: 1rem;
-      text-decoration: none;
-      font-weight: bold;
+    .dropdown {
+      position: relative;
+      display: inline-block;
     }
-    nav a:hover {
-      text-decoration: underline;
+    .dropbtn {
+      background-color: #333;
+      color: white;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+    .dropdown-content a {
+      color: black;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+    }
+    .dropdown-content a:hover {
+      background-color: #f1f1f1;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
     }
     #map {
       height: 80vh;
@@ -43,14 +73,16 @@
   </style>
 </head>
 <body>
-
   <header>
     <h1>Sistema de identificación de zonas emisoras de CO₂</h1>
-    <nav>
-      <a href="#">Mapa.</a>
-      <a href="#">Análisis.</a>
-      <a href="#">Contacto.</a>
-    </nav>
+    <div class="dropdown">
+      <button class="dropbtn">Menú</button>
+      <div class="dropdown-content">
+        <a href="#">Mapa</a>
+        <a href="#">Análisis</a>
+        <a href="#">Contacto</a>
+      </div>
+    </div>
   </header>
 
   <div id="map"></div>
@@ -61,16 +93,26 @@
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    const map = L.map('map').setView([23.6345, -102.5528], 5);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
+    const map = L.map('map').setView([19.25, -96.25], 7);
 
-    fetch("mexico.geojson")
-      .then(res => res.json())
-      .then(data => L.geoJSON(data).addTo(map));
+    L.tileLayer(
+      'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+      {
+        attribution: 'Tiles © Esri'
+      }
+    ).addTo(map);
+
+    fetch('datos.geojson')
+      .then((res) => res.json())
+      .then((data) => {
+        L.geoJSON(data, {
+          onEachFeature: function (feature, layer) {
+            if (feature.properties && feature.properties.nombre) {
+              layer.bindPopup(feature.properties.nombre);
+            }
+          }
+        }).addTo(map);
+      });
   </script>
-
 </body>
 </html>
