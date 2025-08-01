@@ -102,7 +102,7 @@
       }
     ).addTo(map);
 
-    fetch('Data.geojson')
+    fetch('Datos.geojson')
       .then((res) => res.json())
       .then((data) => {
         L.geoJSON(data, {
@@ -116,3 +116,4 @@
   </script>
 </body>
 </html>
+
