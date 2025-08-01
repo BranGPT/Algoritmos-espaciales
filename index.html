@@ -102,7 +102,7 @@
       }
     ).addTo(map);
 
-    fetch('datos.geojson')
+    fetch('Data.geojson')
       .then((res) => res.json())
       .then((data) => {
         L.geoJSON(data, {
