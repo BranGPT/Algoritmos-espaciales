@@ -95,24 +95,39 @@
   <script>
     const map = L.map('map').setView([22.804262, -99.2452804], 4);
 
- L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; OpenStreetMap contributors'
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OpenStreetMap contributors & Carto',
+  subdomains: 'abcd',
+  maxZoom: 19
 }).addTo(map);
 
     fetch('Datos.geojson')
-      .then((res) => res.json())
-      .then((data) => {
-        L.geoJSON(data, {
-          onEachFeature: function (feature, layer) {
-            if (feature.properties && feature.properties.nombre) {
-              layer.bindPopup(feature.properties.nombre);
-            }
-          }
-        }).addTo(map);
+  .then((res) => res.json())
+  .then((data) => {
+    L.geoJSON(data, {
+      pointToLayer: function (feature, latlng) {
+        return L.circleMarker(latlng, {
+          radius: 4,
+          fillColor: "#e60000",
+          color: "#800000",
+          weight: 1,
+          opacity: 1,
+          fillOpacity: 0.8
+        });
+      },
+      onEachFeature: function (feature, layer) {
+        if (feature.properties && feature.properties.nombre) {
+          layer.bindPopup(feature.properties.nombre);
+        }
+      }
+    }).addTo(map);
+  });
+
       });
   </script>
 </body>
 </html>
+
 
 
 
