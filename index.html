@@ -63,13 +63,11 @@
       display: flex;
       flex: 1;
     }
-
     #map {
       flex: 68%;
       height: 80vh;
-      background: lightblue; /* simulamos el mapa */
+      background: lightblue;
     }
-
     #filt {
       flex: 28%;
       height: 77vh;
@@ -90,18 +88,21 @@
 </head>
 <body>
   <header>
-    <h1>Sistema de identificación de zonas emisoras de contaminantes hidrocarburos. 🌐 </h1>
+    <h1>Sistema de identificación de zonas emisoras de contaminantes hidrocarburos. 🌐</h1>
     <div class="dropdown">
       <button class="dropbtn">Menú</button>
       <div class="dropdown-content">
         <a href="#">Mapa</a>
         <a href="#">Análisis</a>
         <a href="#">Contacto</a>
+        <!-- 🔽 NUEVO ENLACE AL PDF -->
+        <a href="tesis.pdf" target="_blank">Tesis</a>
+        <!-- Asegúrate de que el archivo se llame exactamente "tesis.pdf" y esté en la misma carpeta que este HTML -->
       </div>
     </div>
   </header>
 
- <div class="main">
+  <div class="main">
     <div id="map">Aquí va el mapa</div>
     <div id="filt">
       <h3>Selección de análisis</h3>
@@ -119,14 +120,12 @@
   <script>
     const map = L.map('map').setView([22.804262, -99.2452804], 5);
 
-    // Capa de fondo minimalista
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       attribution: '&copy; OpenStreetMap contributors & Carto',
       subdomains: 'abcd',
       maxZoom: 19
     }).addTo(map);
 
-    // Carga GeoJSON y dibuja puntos simples
     fetch('Datos.geojson')
       .then((res) => res.json())
       .then((data) => {
@@ -157,12 +156,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
